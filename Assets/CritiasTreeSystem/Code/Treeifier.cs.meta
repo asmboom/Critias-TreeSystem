@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 8bd7898a85e9e17438d5ef905b8fe07d
+timeCreated: 1477405452
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_MainManagedTerrain: {instanceID: 0}
+  - m_SystemQuad: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  - m_BillboardShaderBatch: {fileID: 4800000, guid: 30eee0766ee51834282eb08f5cdd7bb9,
+      type: 3}
+  - m_BillboardShaderMaster: {fileID: 4800000, guid: 7b80e36484ed6ff48b1ed3f664a34280,
+      type: 3}
+  - m_TreeShaderMaster: {fileID: 4800000, guid: 5b07db5976a0d7f498ca4012f751189b,
+      type: 3}
+  - m_CellHolder: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

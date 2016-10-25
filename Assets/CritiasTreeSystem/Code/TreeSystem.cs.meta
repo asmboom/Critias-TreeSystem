@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 186d67210e4d712498836de3e61f4cdb
+timeCreated: 1477405482
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_ShaderTreeMaster: {fileID: 4800000, guid: 5b07db5976a0d7f498ca4012f751189b,
+      type: 3}
+  - m_ShaderBillboardMaster: {fileID: 4800000, guid: 7b80e36484ed6ff48b1ed3f664a34280,
+      type: 3}
+  - m_SystemQuad: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  - m_Terrain: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

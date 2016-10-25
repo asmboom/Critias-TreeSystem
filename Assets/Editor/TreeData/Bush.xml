@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<SpeedTreeRaw Exporter="Compiler" VersionMajor="6" VersionMinor="0" UsedAsGrass="false">	
+	<Billboards MaterialID="2" Near="400" Far="500">
+		<Vertical Count="8" Width="12.2316" Height="6.99848" Base="-1.18396">
+			<Billboard Rotated="true">
+				<TexcoordU>0.398438 0.398438 0.199219 0.199219 </TexcoordU>
+				<TexcoordV>0. 0.348633 0.348633 0. </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.547852 0.547852 0.348633 0.348633 </TexcoordU>
+				<TexcoordV>0.348633 0.697266 0.697266 0.348633 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.199219 0.199219 0. 0. </TexcoordU>
+				<TexcoordV>0. 0.348633 0.348633 0. </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.796875 0.796875 0.597656 0.597656 </TexcoordU>
+				<TexcoordV>0. 0.348633 0.348633 0. </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.946289 0.946289 0.74707 0.74707 </TexcoordU>
+				<TexcoordV>0.348633 0.697266 0.697266 0.348633 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.996094 0.996094 0.796875 0.796875 </TexcoordU>
+				<TexcoordV>0. 0.348633 0.348633 0. </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.597656 0.597656 0.398438 0.398438 </TexcoordU>
+				<TexcoordV>0. 0.348633 0.348633 0. </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.74707 0.74707 0.547852 0.547852 </TexcoordU>
+				<TexcoordV>0.348633 0.697266 0.697266 0.348633 </TexcoordV>
+			</Billboard>
+		</Vertical>
+		<Horizontal Width="12.2316" Z="2.31528" Rotated="false">
+			<TexcoordU>0. 0.348633 0.348633 0. </TexcoordU>
+			<TexcoordV>0.348633 0.348633 0.697266 0.697266 </TexcoordV>
+		</Horizontal>
+		<Cutout>
+			<Vertices Count="6">
+				<InterpolateX>0.15 0.113889 0.113889 0.847223 0.883334 0.883334 </InterpolateX>
+				<InterpolateY>0.130556 0.497223 0.86389 0.130556 0.497223 0.86389 </InterpolateY>
+			</Vertices>
+			<Indices Count="12" Max="5">0 3 4 0 4 1 1 4 5 1 5 2 </Indices>
+		</Cutout>
+	</Billboards>
+</SpeedTreeRaw>

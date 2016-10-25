@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<SpeedTreeRaw Exporter="Compiler" VersionMajor="6" VersionMinor="0" UsedAsGrass="false">	
+	<Billboards MaterialID="6" Near="285" Far="300">
+		<Vertical Count="8" Width="84.8964" Height="58.8285" Base="-1.70068">
+			<Billboard Rotated="true">
+				<TexcoordU>0.231445 0.231445 0. 0. </TexcoordU>
+				<TexcoordV>0.333008 0.666016 0.666016 0.333008 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.231445 0.231445 0. 0. </TexcoordU>
+				<TexcoordV>0.666016 0.999023 0.999023 0.666016 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="false">
+				<TexcoordU>0.333008 0.666016 0.666016 0.333008 </TexcoordU>
+				<TexcoordV>0. 0. 0.231445 0.231445 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.564453 0.564453 0.333008 0.333008 </TexcoordU>
+				<TexcoordV>0.231445 0.564453 0.564453 0.231445 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.564453 0.564453 0.333008 0.333008 </TexcoordU>
+				<TexcoordV>0.564453 0.897461 0.897461 0.564453 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="false">
+				<TexcoordU>0.666016 0.999023 0.999023 0.666016 </TexcoordU>
+				<TexcoordV>0. 0. 0.231445 0.231445 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.897461 0.897461 0.666016 0.666016 </TexcoordU>
+				<TexcoordV>0.231445 0.564453 0.564453 0.231445 </TexcoordV>
+			</Billboard>
+			<Billboard Rotated="true">
+				<TexcoordU>0.897461 0.897461 0.666016 0.666016 </TexcoordU>
+				<TexcoordV>0.564453 0.897461 0.897461 0.564453 </TexcoordV>
+			</Billboard>
+		</Vertical>
+		<Horizontal Width="84.8964" Z="27.7136" Rotated="false">
+			<TexcoordU>0. 0.333008 0.333008 0. </TexcoordU>
+			<TexcoordV>0. 0. 0.333008 0.333008 </TexcoordV>
+		</Horizontal>
+		<Cutout>
+			<Vertices Count="6">
+				<InterpolateX>0.47093 3.77907e-002 3.77907e-002 0.52907 0.959302 0.959302 </InterpolateX>
+				<InterpolateY>2.03488e-002 0.498547 0.976744 2.03488e-002 0.498547 0.976744 </InterpolateY>
+			</Vertices>
+			<Indices Count="12" Max="5">0 3 4 0 4 1 1 4 5 1 5 2 </Indices>
+		</Cutout>
+	</Billboards>
+</SpeedTreeRaw>
