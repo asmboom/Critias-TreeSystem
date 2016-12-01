@@ -1,4 +1,5 @@
-﻿Shader "Atlantis Nature/SpeedTree Billboard Master" {
+﻿Shader "Critias/Nature/SpeedTree Billboard Master" 
+{
 	Properties {		
 		_MainTex("Main Texture", 2D) = "black" {}
 		_BumpMap("Normal Map", 2D) = "black" {}
@@ -44,6 +45,9 @@
 			float3 screenPos;
 		};
 
+		// Global tree system distance
+		// float _TreeSystemDistance;
+
 		float4 _UVVert_U[8];
 		float4 _UVVert_V[8];
 
@@ -53,7 +57,7 @@
 		float3 _Size;
 
 		float4 _InstanceScaleRotation;
-
+		
 		void TreeVertex(inout appdata_t IN, out Input OUT)
 		{
 			UNITY_INITIALIZE_OUTPUT(Input, OUT);
@@ -179,6 +183,7 @@
 
 		ENDCG
 
+		// Disable shadowstuff at the moment
 		/*
 		Pass
 		{

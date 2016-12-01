@@ -11,7 +11,10 @@
 	#define GEOM_TYPE_BRANCH
 #endif
 
-#include "SpeedTreeVertex_Master.cginc"
+// #include "SpeedTreeVertex_Master.cginc"
+#define LOD_FADE_PERCENTAGE
+#include "SpeedTreeVertex.cginc"
+#undef LOD_FADE_PERCENTAGE
 
 // Define Input structure
 
@@ -24,7 +27,6 @@ struct Input
 	#endif
 	
 	float4 screenPos;
-	// half transparency;
 };
 	
 // Define uniforms
@@ -32,7 +34,10 @@ struct Input
 #define mainTexUV interpolator1.xy
 sampler2D _MainTex;
 
-half4 master_LODFade;
+UNITY_INSTANCING_CBUFFER_START(Fading)
+	UNITY_DEFINE_INSTANCED_PROP(half, master_LODFadeFull)
+	UNITY_DEFINE_INSTANCED_PROP(half, master_LODFadeDetail)
+UNITY_INSTANCING_CBUFFER_END
 
 #ifdef GEOM_TYPE_BRANCH_DETAIL
 	#define Detail interpolator2
@@ -49,7 +54,7 @@ half4 master_LODFade;
 	half4 _HueVariation;
 #endif
 
-#ifdef EFFECT_BUMP
+#if defined(EFFECT_BUMP) && !defined(LIGHTMAP_ON)
 	sampler2D _BumpMap;
 #endif
 
@@ -61,29 +66,6 @@ void SpeedTreeVert(inout SpeedTreeVB IN, out Input OUT)
 {
 	UNITY_INITIALIZE_OUTPUT(Input, OUT);
 	
-	/*
-	// Calculate distance
-	{
-		// IT IS IN LOCAL SPACE
-		// IN.vertex
-
-		float3 treePos = float3(unity_ObjectToWorld[0].w, unity_ObjectToWorld[1].w, unity_ObjectToWorld[2].w);
-		float dist = distance(treePos, _WorldSpaceCameraPos);
-
-#define DISTANCE 300.0
-#define THRES 5.0
-
-		if (dist > DISTANCE - THRES)
-		{
-			OUT.transparency = (clamp(DISTANCE - dist, 0.0, THRES) / THRES);
-		}
-		else
-		{
-			OUT.transparency = 1.0;
-		}
-	}
-	*/
-
 	OUT.mainTexUV = IN.texcoord.xy;
 	OUT.color = _Color;
 	OUT.color.rgb *= IN.color.r; // ambient occlusion factor
@@ -103,12 +85,12 @@ void SpeedTreeVert(inout SpeedTreeVB IN, out Input OUT)
 			OUT.Detail.z = 2.5f; // stay out of Blend's .z range
 	#endif
 
-	OffsetSpeedTreeVertex(IN, master_LODFade);
+	OffsetSpeedTreeVertex(IN, UNITY_ACCESS_INSTANCED_PROP(master_LODFadeDetail));
 }
 
 // Fragment processing
 
-#ifdef EFFECT_BUMP
+#if defined(EFFECT_BUMP) && !defined(LIGHTMAP_ON)
 	#define SPEEDTREE_DATA_NORMAL			fixed3 Normal;
 	#define SPEEDTREE_COPY_NORMAL(to, from)	to.Normal = from.Normal;
 #else
@@ -150,8 +132,7 @@ void SpeedTreeFrag(Input IN, out SpeedTreeFragOut OUT)
 		float2 pos = IN.screenPos.xy / IN.screenPos.z;
 		pos *= _ScreenParams.xy; // pixel position
 
-		clip(master_LODFade.y - thresholdMatrix[fmod(pos.x, 4)] * _RowAccess[fmod(pos.y, 4)]);
-		// clip(IN.transparency - thresholdMatrix[fmod(pos.x, 4)] * _RowAccess[fmod(pos.y, 4)]);
+		clip(UNITY_ACCESS_INSTANCED_PROP(master_LODFadeFull) - thresholdMatrix[fmod(pos.x, 4)] * _RowAccess[fmod(pos.y, 4)]);
 	}
 
 	#ifdef GEOM_TYPE_BRANCH_DETAIL
@@ -172,7 +153,7 @@ void SpeedTreeFrag(Input IN, out SpeedTreeFragOut OUT)
 
 	OUT.Albedo = diffuseColor.rgb * IN.color.rgb;
 
-	#ifdef EFFECT_BUMP
+	#if defined(EFFECT_BUMP) && !defined(LIGHTMAP_ON)
 		OUT.Normal = UnpackNormal(tex2D(_BumpMap, IN.mainTexUV));
 	#endif
 }

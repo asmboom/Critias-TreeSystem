@@ -237,10 +237,11 @@ public class TerrainUtils : MonoBehaviour
         return true;
     }
 
-    public delegate void OnCellCreate(BoxCollider cell, int row, int column);    
+    public delegate void OnCellCreate(BoxCollider boxCell, SphereCollider sphereCell, int row, int column);    
 
-    public static BoxCollider[,] Gridify(Terrain terrain, int cellSize, out int cellCount, GameObject cellHolder, OnCellCreate OnCellCreate,
-        bool followTerrain = true, float minOffset = 5, float maxOffset = 50)
+    public static void Gridify(Terrain terrain, int cellSize, 
+        out int cellCount,  out BoxCollider[,] boxColliders, out SphereCollider[,] sphereColliders,
+        GameObject cellHolder, OnCellCreate OnCellCreate, bool followTerrain = true, float minOffset = 5, float maxOffset = 50)
     {
         Vector3 tSize = terrain.terrainData.size;
 
@@ -248,14 +249,19 @@ public class TerrainUtils : MonoBehaviour
         {
             Debug.LogError("Non square cells or terrain not allowed!");
 
+            // Set all to null and zero
             cellCount = 0;
-            return null;
+            boxColliders = null;
+            sphereColliders = null;
+
+            return;
         }
 
         cellCount = (int)(tSize.x) / cellSize;
         float halfSize = cellSize / 2.0f;
 
-        BoxCollider[,] cells = new BoxCollider[cellCount, cellCount];
+        BoxCollider[,] cellsBox = new BoxCollider[cellCount, cellCount];
+        SphereCollider[,] cellsSphere = new SphereCollider[cellCount, cellCount];
 
         Vector3 gridSize = new Vector3(cellSize, cellSize, cellSize);
 
@@ -266,16 +272,20 @@ public class TerrainUtils : MonoBehaviour
                 GameObject cell = new GameObject("Cell[R:" + row + " C:" + column + "]");
                 cell.isStatic = true;
 
-                cell.transform.SetParent(cellHolder.transform, false);
+                cell.transform.SetParent(cellHolder.transform, true);
 
                 BoxCollider box = cell.AddComponent<BoxCollider>();
+                SphereCollider sphere = cell.AddComponent<SphereCollider>();
 
+                sphere.isTrigger = true;
                 box.isTrigger = true;
+
+                // Set data
                 box.center = new Vector3();
                 box.size = gridSize;
 
                 // Calculate in local space the position
-                box.transform.localPosition = new Vector3(cellSize * row + cellSize / 2.0f, 0.0f, cellSize * column + cellSize / 2.0f);
+                cell.transform.position = terrain.GetPosition() + new Vector3(cellSize * row + cellSize / 2.0f, 0.0f, cellSize * column + cellSize / 2.0f);
 
                 if (followTerrain)
                 {
@@ -304,19 +314,26 @@ public class TerrainUtils : MonoBehaviour
                     }
 
                     box.size = new Vector3(box.size.x, (max - min) + minOffset + maxOffset, box.size.z);
-                    box.transform.position = new Vector3(box.transform.position.x,
+                    sphere.radius = box.size.magnitude / 2f;
+
+                    cell.transform.position = new Vector3(box.transform.position.x,
                         (min - minOffset) + ((max + maxOffset) - (min - minOffset)) / 2.0f,
                         box.transform.position.z);
                 }
 
-                cells[row, column] = box;
+                // Set the data
+                cellsBox[row, column] = box;
+                cellsSphere[row, column] = sphere;
 
+                // Invoke delegate
                 if (OnCellCreate != null)
-                    OnCellCreate(box, row, column);
+                    OnCellCreate(box, sphere, row, column);
             }
         }
 
-        return cells;
+        // Set the out values
+        boxColliders = cellsBox;
+        sphereColliders = cellsSphere;
     }
 
     /**
@@ -458,12 +475,30 @@ public class TerrainUtils : MonoBehaviour
         return same;
     }
 
-    public static Vector3 TerrainToWorldPos(Vector3 terrainLocalPos, Terrain terrain)
+    /**
+     * Converts from the 0..1 range to the terrain's local position. For example, on a 
+     * 1000x1000 terrain 0 is 0, 0.5 is 500, 1 is 1000.
+     */
+    public static Vector3 TerrainToTerrainPos(Vector3 terrainNormalizedLocalPos, Terrain terrain)
     {
         Vector3 size = terrain.terrainData.size;
-        Vector3 worldPos = new Vector3(Mathf.Lerp(0.0f, size.x, terrainLocalPos.x),
-                                       Mathf.Lerp(0.0f, size.y, terrainLocalPos.y),
-                                       Mathf.Lerp(0.0f, size.z, terrainLocalPos.z));
+        Vector3 worldPos = new Vector3(Mathf.Lerp(0.0f, size.x, terrainNormalizedLocalPos.x),
+                                       Mathf.Lerp(0.0f, size.y, terrainNormalizedLocalPos.y),
+                                       Mathf.Lerp(0.0f, size.z, terrainNormalizedLocalPos.z));
+        
+        return worldPos;
+    }
+
+    /**
+     * Converts from the 0..1 range to the world possition. As a difference between this and
+     * 'TerrainToTerrainPos' this also applies the terrain's world position.
+     */
+    public static Vector3 TerrainToWorldPos(Vector3 terrainNormalizedLocalPos, Terrain terrain)
+    {
+        Vector3 size = terrain.terrainData.size;
+        Vector3 worldPos = new Vector3(Mathf.Lerp(0.0f, size.x, terrainNormalizedLocalPos.x),
+                                       Mathf.Lerp(0.0f, size.y, terrainNormalizedLocalPos.y),
+                                       Mathf.Lerp(0.0f, size.z, terrainNormalizedLocalPos.z));
 
         worldPos += terrain.transform.position;
 

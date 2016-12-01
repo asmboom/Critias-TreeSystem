@@ -7,31 +7,45 @@ public class DrawBounds : MonoBehaviour
 {
     public MeshFilter m_Bounds;
     public MeshRenderer m_Renderer;
-
+    public Collider m_Collider;
+    
     void Start()
     {
         m_Bounds = GetComponent<MeshFilter>();
         m_Renderer = GetComponent<MeshRenderer>();
+        m_Collider = GetComponent<Collider>();
     }
 
     void OnDrawGizmosSelected()
     {
-        Bounds b = m_Bounds.sharedMesh.bounds;
+        if (m_Bounds)
+        {
+            Bounds b = m_Bounds.sharedMesh.bounds;
 
-        b = LocalToWorld(b, transform.localToWorldMatrix);
+            b = LocalToWorld(b, transform.localToWorldMatrix);
 
-        Vector3 center = b.center;
-        float radius = b.extents.magnitude;
+            Vector3 center = b.center;
+            float radius = b.extents.magnitude;
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(center, radius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(b.center, b.size);
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(center, radius);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(b.center, b.size);
+        }
 
-        Gizmos.color = Color.red;
+        if (m_Renderer)
+        {
+            Gizmos.color = Color.red;
+            float offset = 0.1f;
+            Gizmos.DrawWireCube(m_Renderer.bounds.center, m_Renderer.bounds.size + new Vector3(offset, offset, offset));
+        }
 
-        float offset = 0.1f;
-        Gizmos.DrawWireCube(m_Renderer.bounds.center, m_Renderer.bounds.size + new Vector3(offset, offset, offset));        
+        if(m_Collider)
+        {
+            Gizmos.color = Color.cyan;
+            float offset = 0.05f;
+            Gizmos.DrawWireCube(m_Collider.bounds.center, m_Collider.bounds.size + new Vector3(offset, offset, offset));
+        }
     }
 
     public static Bounds LocalToWorld(Bounds box, Matrix4x4 m)

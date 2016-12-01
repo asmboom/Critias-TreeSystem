@@ -1,4 +1,5 @@
-﻿Shader "Atlantis Nature/SpeedTree Bilboard Batch" {
+﻿Shader "Critias/Nature/SpeedTree Bilboard Batch" 
+{
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -44,6 +45,8 @@
 			float4 texcoord2	: TEXCOORD2;
 			half4 color			: COLOR;
 		};
+
+		float _TreeSystemDistance;
 
 		fixed4 _Color;
 		fixed _Cutoff;
@@ -119,11 +122,8 @@
 				OUT.computedUv = float2(_UVVert_U[angleIdx][idx], _UVVert_V[angleIdx][idx]);
 			}
 
-#define DISTANCE 300.0
-#define THRES 10.0
-
 			// if (dist > DISTANCE - THRES)
-			if (dist >= DISTANCE)
+			if (dist >= _TreeSystemDistance)
 			{
 				// OUT.transparency = 1.0 - (clamp(DISTANCE - dist, 0.0, THRES) / THRES);
 
@@ -161,24 +161,7 @@
 		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o)
-		{	
-			/*
-			{
-				// Screen-door transparency: Discard pixel if below threshold.
-				float4x4 thresholdMatrix =
-				{ 
-					1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
-					13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
-					4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
-					16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
-				};
-				float4x4 _RowAccess = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-				float2 pos = IN.screenPos.xy / IN.screenPos.z;
-				pos *= _ScreenParams.xy; // pixel position
-				clip(IN.transparency - thresholdMatrix[fmod(pos.x, 4)] * _RowAccess[fmod(pos.y, 4)]);
-			}
-			*/
-
+		{				
 			// Albedo comes from a texture tinted by color
 			// fixed4 c = fixed4(0.2, 0.4, 0.6, 1); // tex2D(_MainTex, IN.computedUv) * _Color;
 			fixed4 c = tex2D(_MainTex, IN.computedUv) * _Color;

@@ -20,8 +20,8 @@ public class DrawTreeLOD : MonoBehaviour
         system = FindObjectOfType<TreeSystem>();
         protoData = system.m_ManagedPrototypes[0];
 
-        THRESHOLD = system.m_Settings.m_LODTranzitionThreshold;
-        procDistance = system.m_Settings.m_MaxTreeDistance - THRESHOLD;
+        THRESHOLD = system.GetTreeTanzitionThreshold();
+        procDistance = system.GetTreeDistance() - THRESHOLD;
     }
     
     void Update()
@@ -50,6 +50,8 @@ public class DrawTreeLOD : MonoBehaviour
         }
     }
 
+    public float m_FadeSpeed = 5.0f;
+
     /**
      * Must be called only if the camera distance is smaller than the maximum tree view distance.
      */
@@ -72,32 +74,32 @@ public class DrawTreeLOD : MonoBehaviour
                 }
             }
 
-            if (inst.m_LODFullFade < 1) inst.m_LODFullFade += Time.deltaTime * system.m_Settings.m_LODFadeSpeed;
+            if (inst.m_LODFullFade < 1) inst.m_LODFullFade += Time.deltaTime * m_FadeSpeed;
         }
         else
         {
             inst.m_LODLevel = 2;
-            if(inst.m_LODFullFade >= 0) inst.m_LODFullFade -= Time.deltaTime * system.m_Settings.m_LODFadeSpeed;
+            if(inst.m_LODFullFade >= 0) inst.m_LODFullFade -= Time.deltaTime * m_FadeSpeed;
         }
     }
 
     public void Draw3DLOD(TreeSystemLODData data, ref TreeSystemLODInstance inst)
     {
-        data.m_Block.SetVector(system.m_ShaderIDFadeLOD, new Vector4(inst.m_LODTransition, inst.m_LODFullFade, 0, 0));
+        // data.m_Block.SetVector(system.m_ShaderIDFadeLOD, new Vector4(inst.m_LODTransition, inst.m_LODFullFade, 0, 0));
 
         for (int mat = 0; mat < data.m_Materials.Length; mat++)
         {
-            Graphics.DrawMesh(data.m_Mesh, transform.localToWorldMatrix, data.m_Materials[mat], 0, null, mat, data.m_Block, true, true);
+            Graphics.DrawMesh(data.m_Mesh, transform.localToWorldMatrix, data.m_Materials[mat], mat, null, mat, data.m_Block, true, true);
         }
     }
 
     public void DrawBillboardLOD(TreeSystemLODData data, ref TreeSystemLODInstance inst)
     {
-        data.m_Block.SetVector(system.m_ShaderIDFadeLOD, new Vector4(inst.m_LODTransition, 1.0f - inst.m_LODFullFade, 0, 0));
+        // data.m_Block.SetVector(system.m_ShaderIDFadeLOD, new Vector4(inst.m_LODTransition, 1.0f - inst.m_LODFullFade, 0, 0));
 
         for (int mat = 0; mat < data.m_Materials.Length; mat++)
         {            
-            Graphics.DrawMesh(data.m_Mesh, transform.localToWorldMatrix, data.m_Materials[mat], 0, null, mat, data.m_Block, true, true);
+            Graphics.DrawMesh(data.m_Mesh, transform.localToWorldMatrix, data.m_Materials[mat], mat, null, mat, data.m_Block, true, true);
         }
     }
 }
