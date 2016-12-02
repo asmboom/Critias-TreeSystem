@@ -13,6 +13,7 @@ public struct TreeSystemStoredInstance
     public Matrix4x4 m_PositionMtx;
     public Vector3 m_WorldPosition;
     public Vector3 m_WorldScale;
+    // World Y rotation stored in radians, for the billboards
     public float m_WorldRotation;
     public Bounds m_WorldBounds;
 }

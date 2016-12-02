@@ -42,6 +42,7 @@
 		struct Input 
 		{			
 			float2 computedUv;
+
 			float3 screenPos;
 		};
 
@@ -75,7 +76,7 @@
 			float3 campos = _WorldSpaceCameraPos;
 			float3 pos = float3(unity_ObjectToWorld[0].w, unity_ObjectToWorld[1].w, unity_ObjectToWorld[2].w);
 
-			int angleIdx;
+			int angleIdx, angleIdxNext;
 
 			float3 v2 = float3(0, 0, 1);
 			float3 v1 = campos - pos;
@@ -104,13 +105,19 @@
 				OUT.computedUv = float2(_UVHorz_U[idx], _UVHorz_V[idx]);
 			}
 			else
-			{
-				// Quarter PI: 0.78539816339
-				// Half PI: 1.57079632679
-				// Chose the index based on the distance (angle / 45)
-				// There's a 90' difference between our bill's and unity's... Ask on forums for this one?
-				// angleIdx = (angle) / 0.78539816339;
-				angleIdx = fmod((angle + _InstanceScaleRotation.w) / 0.78539816339, 8);
+			{				
+				v2 = v1;
+				v1 = float3(-1, 0, 0);
+
+				dotA = v1.x * v2.x + v1.z * v2.z;
+				detA = v1.x * v2.z - v1.z * v2.x;
+
+				float angle360 = (atan2(detA, dotA) + 3.141592632) + _InstanceScaleRotation.w;
+				if (angle360 < 0) angle360 = 6.283185264 + angle360;
+
+				// 1.27 is inverse of 45' in rad				
+				angleIdx = fmod(floor((angle360) * 1.273239553 + 0.5), 8);
+				
 				OUT.computedUv = float2(_UVVert_U[angleIdx][idx], _UVVert_V[angleIdx][idx]);
 			}
 

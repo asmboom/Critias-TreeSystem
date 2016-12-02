@@ -196,7 +196,8 @@ namespace UnityStandardAssets.CinematicEffects
                 DestroyImmediate(m_Material);
 
             m_Material = null;
-            m_RTU.ReleaseAllTemporaryRenderTextures();
+            if(m_RTU != null)
+                m_RTU.ReleaseAllTemporaryRenderTextures();
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)

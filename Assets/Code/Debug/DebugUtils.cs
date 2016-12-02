@@ -11,6 +11,12 @@ public class DebugUtils : MonoBehaviour
     public float m_Distance = 300;
     public bool m_UseInstancing = true;
 
+    void Start()
+    {
+        m_TreeSystem.m_UseInstancing = m_UseInstancing;
+        m_TreeSystem.SetTreeDistance(m_Distance);
+    }
+
 	void OnGUI()
     {
         float dist = GUI.HorizontalSlider(new Rect(20, 20, 100, 20), m_Distance, 0f, 2000f);
@@ -30,6 +36,7 @@ public class DebugUtils : MonoBehaviour
             m_TreeSystem.m_UseInstancing = m_UseInstancing;
         }
 
-        m_Info.text = m_TreeSystem.GetDrawInfo();
+        if(m_Info)
+            m_Info.text = m_TreeSystem.GetDrawInfo();
     }
 }
