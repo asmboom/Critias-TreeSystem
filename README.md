@@ -3,6 +3,9 @@ Critias Tree System
 The Critias tree system is an Unity addition that is used for an, currently in-development, open-world quest named 'The Unwritten Critias'. It was developed due to the poor
 performance of the Unity's built-in SpeedTree implementation.
 
+! IMPORTANT !
+At runtime the managed terain's trees and foliage is turned off, so your terrain's grass will go away. In order to mitigate that I would recommend having two terrains, one for trees and the other for grass.
+
 HOWTO:
 
 Long story short, there are two important scripts. 'Treeifier' and 'TreeSystem'. Create an game object and add it these two scripts. The 'Treeifier' script is used for
